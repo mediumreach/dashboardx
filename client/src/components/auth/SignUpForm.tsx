@@ -223,11 +223,11 @@ export function SignUpForm() {
       {/* Terms Notice */}
       <p className="text-xs text-center text-gray-600">
         By signing up, you agree to our{' '}
-        <button type="button" className="text-cyan-600 hover:text-purple-700 font-medium transition-colors">
+        <button type="button" className="text-cyan-600 hover:text-blue-700 font-medium transition-colors">
           Terms of Service
         </button>{' '}
         and{' '}
-        <button type="button" className="text-cyan-600 hover:text-purple-700 font-medium transition-colors">
+        <button type="button" className="text-cyan-600 hover:text-blue-700 font-medium transition-colors">
           Privacy Policy
         </button>
       </p>

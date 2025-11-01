@@ -20,14 +20,8 @@ export function ChatPage() {
   });
 
   const { data: messages = [], isLoading } = useQuery<Message[]>({
-    queryKey: ['/api/chat/sessions', config?.sessionId, 'messages'],
-    queryFn: async () => {
-      if (!config) return [];
-      const res = await fetch(`/api/chat/sessions/${config.sessionId}/messages`);
-      if (!res.ok) return [];
-      return res.json();
-    },
-    enabled: !!config,
+    queryKey: [`/api/chat/sessions/${config?.sessionId}/messages`],
+    enabled: !!config?.sessionId,
   });
 
   const sendMessage = useMutation({
@@ -45,7 +39,7 @@ export function ChatPage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/chat/sessions', config?.sessionId, 'messages'] });
+      queryClient.invalidateQueries({ queryKey: [`/api/chat/sessions/${config?.sessionId}/messages`] });
       setInput('');
     },
   });

@@ -1,11 +1,18 @@
 import { Link, useLocation } from 'wouter';
 import { MessageSquare, FileText, Bot, Database, BarChart3, Menu, X, LogOut, Users, Brain } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    const stored = localStorage.getItem('sidebarOpen');
+    return stored !== null ? stored === 'true' : window.innerWidth >= 1024;
+  });
+
+  useEffect(() => {
+    localStorage.setItem('sidebarOpen', String(isSidebarOpen));
+  }, [isSidebarOpen]);
 
   const { signOut, profile } = useAuth();
 

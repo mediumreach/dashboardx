@@ -11,8 +11,8 @@ export function DataSourcesPage() {
   });
 
   const { data: dataSources = [], isLoading } = useQuery<DataSource[]>({
-    queryKey: ['/api/data-sources', config?.tenantId],
-    enabled: !!config,
+    queryKey: [`/api/data-sources/${config?.tenantId}`],
+    enabled: !!config?.tenantId,
   });
 
   const createDataSource = useMutation({
@@ -23,7 +23,7 @@ export function DataSourcesPage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/data-sources', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/data-sources/${config?.tenantId}`] });
     },
   });
 
@@ -32,7 +32,7 @@ export function DataSourcesPage() {
       return apiRequest(`/api/data-sources/${id}`, { method: 'DELETE' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/data-sources', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/data-sources/${config?.tenantId}`] });
     },
   });
 

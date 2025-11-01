@@ -11,8 +11,8 @@ export function DocumentsPage() {
   });
 
   const { data: documents = [], isLoading } = useQuery<Document[]>({
-    queryKey: ['/api/documents', config?.tenantId],
-    enabled: !!config,
+    queryKey: [`/api/documents/${config?.tenantId}`],
+    enabled: !!config?.tenantId,
   });
 
   const deleteDocument = useMutation({
@@ -20,7 +20,7 @@ export function DocumentsPage() {
       return apiRequest(`/api/documents/${id}`, { method: 'DELETE' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/documents', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/documents/${config?.tenantId}`] });
     },
   });
 
@@ -32,7 +32,7 @@ export function DocumentsPage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/documents', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/documents/${config?.tenantId}`] });
     },
   });
 

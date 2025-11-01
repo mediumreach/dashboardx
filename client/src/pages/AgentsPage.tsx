@@ -11,8 +11,8 @@ export function AgentsPage() {
   });
 
   const { data: agents = [], isLoading } = useQuery<CustomAgent[]>({
-    queryKey: ['/api/agents', config?.tenantId],
-    enabled: !!config,
+    queryKey: [`/api/agents/${config?.tenantId}`],
+    enabled: !!config?.tenantId,
   });
 
   const createAgent = useMutation({
@@ -23,7 +23,7 @@ export function AgentsPage() {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/agents', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/agents/${config?.tenantId}`] });
     },
   });
 
@@ -32,7 +32,7 @@ export function AgentsPage() {
       return apiRequest(`/api/agents/${id}`, { method: 'DELETE' });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/agents', config?.tenantId] });
+      queryClient.invalidateQueries({ queryKey: [`/api/agents/${config?.tenantId}`] });
     },
   });
 
@@ -114,7 +114,7 @@ export function AgentsPage() {
               data-testid={`card-agent-${agent.id}`}
             >
               <div className="flex items-start justify-between mb-3">
-                <Bot className="w-8 h-8 text-purple-600" />
+                <Bot className="w-8 h-8 text-blue-600" />
                 <div className="flex gap-1">
                   <button
                     onClick={() => executeAgent.mutate(agent.id)}

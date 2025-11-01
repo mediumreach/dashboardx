@@ -4,7 +4,7 @@ export function AnalyticsPage() {
 
   const metrics = [
     { name: 'Total Documents', value: '0', icon: FileText, color: 'blue' },
-    { name: 'Active Agents', value: '0', icon: Bot, color: 'purple' },
+    { name: 'Active Agents', value: '0', icon: Bot, color: 'cyan' },
     { name: 'Total Queries', value: '0', icon: Activity, color: 'green' },
     { name: 'Users', value: '0', icon: Users, color: 'orange' },
   ];
