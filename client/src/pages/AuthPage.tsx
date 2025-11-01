@@ -9,8 +9,8 @@ export function AuthPage() {
   return (
     <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-4">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-        <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/10 via-purple-500/10 to-pink-500/10 animate-gradient-shift"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-cyan-50 to-slate-50">
+        <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-blue-500/10 to-blue-600/10 animate-gradient-shift"></div>
       </div>
 
       {/* Floating Particles */}
@@ -25,10 +25,10 @@ export function AuthPage() {
         <Sparkles size={24} className="text-blue-500" />
       </div>
       <div className="absolute top-20 right-20 opacity-20 animate-pulse-slow" style={{ animationDelay: '1s' }}>
-        <Shield size={28} className="text-purple-500" />
+        <Shield size={28} className="text-cyan-500" />
       </div>
       <div className="absolute bottom-20 left-20 opacity-20 animate-pulse-slow" style={{ animationDelay: '2s' }}>
-        <Zap size={26} className="text-pink-500" />
+        <Zap size={26} className="text-blue-500" />
       </div>
 
       {/* Main Content */}
@@ -37,15 +37,15 @@ export function AuthPage() {
         <div className="text-center mb-8 animate-slide-in-down">
           <div className="relative inline-block mb-6">
             {/* Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-40 animate-pulse-slow"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 rounded-3xl blur-2xl opacity-40 animate-pulse-slow"></div>
             
             {/* Icon Container */}
-            <div className="relative w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-3xl flex items-center justify-center shadow-2xl shadow-purple-500/50 transform hover:scale-110 transition-transform duration-300">
+            <div className="relative w-20 h-20 bg-gradient-to-br from-cyan-500 via-blue-600 to-blue-700 rounded-3xl flex items-center justify-center shadow-2xl shadow-cyan-500/50 transform hover:scale-110 transition-transform duration-300">
               <Brain size={40} className="text-white animate-pulse-slow" />
             </div>
           </div>
 
-          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-text">
+          <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-cyan-600 via-blue-600 to-blue-700 bg-clip-text text-transparent animate-gradient-text">
             Agentic RAG Platform
           </h1>
           <p className="text-gray-600 font-medium text-lg">
@@ -56,7 +56,7 @@ export function AuthPage() {
         {/* Glass Morphism Card */}
         <div className="relative backdrop-blur-xl bg-white/80 rounded-3xl shadow-2xl border border-white/20 p-8 animate-scale-in">
           {/* Top Gradient Border */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-t-3xl"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-cyan-500 via-blue-600 to-blue-700 rounded-t-3xl"></div>
 
           {/* Tab Buttons */}
           <div className="flex gap-3 mb-8">
@@ -64,7 +64,7 @@ export function AuthPage() {
               onClick={() => setMode('signin')}
               className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 relative overflow-hidden group ${
                 mode === 'signin'
-                  ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                  ? 'bg-gradient-to-r from-cyan-600 via-blue-600 to-blue-700 text-white shadow-lg shadow-cyan-500/30'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
               }`}
             >
@@ -77,7 +77,7 @@ export function AuthPage() {
               onClick={() => setMode('signup')}
               className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all duration-300 relative overflow-hidden group ${
                 mode === 'signup'
-                  ? 'bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/30'
+                  ? 'bg-gradient-to-r from-cyan-600 via-blue-600 to-blue-700 text-white shadow-lg shadow-cyan-500/30'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
               }`}
             >
@@ -102,7 +102,7 @@ export function AuthPage() {
         {/* Footer */}
         <div className="mt-8 text-center animate-fade-in" style={{ animationDelay: '300ms' }}>
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-white/60 backdrop-blur-sm rounded-full border border-white/20 shadow-lg">
-            <Shield size={16} className="text-purple-600" />
+            <Shield size={16} className="text-cyan-600" />
             <p className="text-sm font-medium text-gray-700">
               Enterprise-grade security with tenant isolation
             </p>

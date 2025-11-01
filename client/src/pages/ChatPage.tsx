@@ -57,41 +57,50 @@ export function ChatPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900" data-testid="text-page-title">Chat</h1>
-        <p className="text-gray-600 mt-1">Ask questions about your documents using RAG</p>
+    <div className="max-w-5xl mx-auto h-[calc(100vh-8rem)] flex flex-col">
+      <div className="mb-6 animate-fade-in">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent mb-2" data-testid="text-page-title">AI Chat</h1>
+        <p className="text-gray-600">Ask questions about your documents using RAG-powered AI</p>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 bg-white rounded-lg border border-gray-200 overflow-y-auto p-4 space-y-4 mb-4">
+      <div className="flex-1 bg-white/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 shadow-xl overflow-y-auto p-6 space-y-4 mb-4 custom-scrollbar">
         {isLoading ? (
           <div className="flex items-center justify-center h-full">
-            <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-cyan-200 border-t-cyan-600 rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600 font-medium">Loading messages...</p>
+            </div>
           </div>
         ) : messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-500" data-testid="text-empty-state">
-            <div className="text-center">
-              <p className="text-lg font-medium">No messages yet</p>
-              <p className="text-sm mt-1">Start a conversation by typing below</p>
+            <div className="text-center animate-fade-in">
+              <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Send className="w-10 h-10 text-white" />
+              </div>
+              <p className="text-xl font-semibold text-gray-700 mb-2">No messages yet</p>
+              <p className="text-sm text-gray-500">Start a conversation by typing below</p>
             </div>
           </div>
         ) : (
           messages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up`}
               data-testid={`message-${message.id}`}
             >
               <div
-                className={`max-w-[70%] rounded-lg px-4 py-2 ${
+                className={`max-w-[75%] rounded-2xl px-5 py-3 shadow-md ${
                   message.role === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-900'
+                    ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white'
+                    : 'bg-white border border-gray-200'
                 }`}
               >
-                <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                <p className="text-xs mt-1 opacity-70">
+                <p className={`text-sm whitespace-pre-wrap leading-relaxed ${
+                  message.role === 'user' ? 'text-white' : 'text-gray-800'
+                }`}>{message.content}</p>
+                <p className={`text-xs mt-2 ${
+                  message.role === 'user' ? 'text-cyan-100' : 'text-gray-500'
+                }`}>
                   {new Date(message.createdAt).toLocaleTimeString()}
                 </p>
               </div>
@@ -100,27 +109,34 @@ export function ChatPage() {
         )}
       </div>
 
-      {/* Input */}
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask a question about your documents..."
-          className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={sendMessage.isPending}
-          data-testid="input-message"
-        />
+      <form onSubmit={handleSubmit} className="flex gap-3 animate-fade-in">
+        <div className="flex-1 relative">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Ask a question about your documents..."
+            className="w-full px-6 py-4 bg-white/80 backdrop-blur-xl border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent shadow-lg hover:shadow-xl transition-all duration-300 placeholder-gray-400"
+            disabled={sendMessage.isPending}
+            data-testid="input-message"
+          />
+        </div>
         <button
           type="submit"
           disabled={!input.trim() || sendMessage.isPending}
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className="px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-2xl hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all duration-300 hover:scale-105 active:scale-95 shadow-lg shadow-cyan-500/30 font-medium"
           data-testid="button-send"
         >
           {sendMessage.isPending ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span>Sending...</span>
+            </>
           ) : (
-            <Send className="w-5 h-5" />
+            <>
+              <Send className="w-5 h-5" />
+              <span>Send</span>
+            </>
           )}
         </button>
       </form>
