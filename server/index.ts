@@ -4,6 +4,7 @@ import { setupVite } from "./vite.js";
 import { DbStorage } from "./storage.js";
 import { createServer } from "http";
 import { db } from "./db.js";
+import { initializeDemoData } from "./init.js";
 
 const app = express();
 app.use(express.json());
@@ -41,6 +42,14 @@ app.use((req, res, next) => {
 
 (async () => {
   const storage = new DbStorage(db);
+
+  // Initialize demo data and expose IDs via API
+  const demoData = await initializeDemoData(storage);
+  
+  // Add endpoint to get demo data
+  app.get("/api/demo/config", (_req, res) => {
+    res.json(demoData);
+  });
 
   registerRoutes(app, storage);
   const server = createServer(app);
