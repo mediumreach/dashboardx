@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { MessageSquare, Plus, Settings, LogOut, FileText, Database, Sparkles, Plug, Users, Shield } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
@@ -12,7 +12,6 @@ interface SidebarProps {
   currentSessionId: string | null;
   onSessionSelect: (sessionId: string) => void;
   onNewChat: () => void;
-  onNavigate: (view: 'chat' | 'documents' | 'sources' | 'settings' | 'mcp' | 'users') => void;
   currentView: string;
 }
 
@@ -20,7 +19,6 @@ export function Sidebar({
   currentSessionId,
   onSessionSelect,
   onNewChat,
-  onNavigate,
   currentView,
 }: SidebarProps) {
   const [sessions, setSessions] = useState<ChatSession[]>([]);

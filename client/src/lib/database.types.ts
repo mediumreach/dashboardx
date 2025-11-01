@@ -224,6 +224,223 @@ export interface Database {
           updated_at?: string
         }
       }
+      custom_agents: {
+        Row: {
+          id: string
+          tenant_id: string
+          user_id: string
+          name: string
+          description: string | null
+          agent_type: string
+          config: Json
+          capabilities: Json
+          status: string
+          is_public: boolean
+          version: string
+          tags: string[]
+          metadata: Json
+          created_at: string
+          updated_at: string
+          last_executed_at: string | null
+        }
+        Insert: {
+          id?: string
+          tenant_id: string
+          user_id: string
+          name: string
+          description?: string | null
+          agent_type: string
+          config?: Json
+          capabilities?: Json
+          status?: string
+          is_public?: boolean
+          version?: string
+          tags?: string[]
+          metadata?: Json
+          created_at?: string
+          updated_at?: string
+          last_executed_at?: string | null
+        }
+        Update: {
+          id?: string
+          tenant_id?: string
+          user_id?: string
+          name?: string
+          description?: string | null
+          agent_type?: string
+          config?: Json
+          capabilities?: Json
+          status?: string
+          is_public?: boolean
+          version?: string
+          tags?: string[]
+          metadata?: Json
+          created_at?: string
+          updated_at?: string
+          last_executed_at?: string | null
+        }
+      }
+      agent_executions: {
+        Row: {
+          id: string
+          agent_id: string
+          tenant_id: string
+          user_id: string
+          session_id: string | null
+          input_data: Json
+          output_data: Json | null
+          status: string
+          execution_time_ms: number | null
+          tokens_used: number | null
+          error_message: string | null
+          error_stack: string | null
+          metadata: Json
+          started_at: string
+          completed_at: string | null
+        }
+        Insert: {
+          id?: string
+          agent_id: string
+          tenant_id: string
+          user_id: string
+          session_id?: string | null
+          input_data: Json
+          output_data?: Json | null
+          status?: string
+          execution_time_ms?: number | null
+          tokens_used?: number | null
+          error_message?: string | null
+          error_stack?: string | null
+          metadata?: Json
+          started_at?: string
+          completed_at?: string | null
+        }
+        Update: {
+          id?: string
+          agent_id?: string
+          tenant_id?: string
+          user_id?: string
+          session_id?: string | null
+          input_data?: Json
+          output_data?: Json | null
+          status?: string
+          execution_time_ms?: number | null
+          tokens_used?: number | null
+          error_message?: string | null
+          error_stack?: string | null
+          metadata?: Json
+          started_at?: string
+          completed_at?: string | null
+        }
+      }
+      analytics: {
+        Row: {
+          id: string
+          tenant_id: string
+          user_id: string | null
+          event_type: string
+          event_data: Json
+          timestamp: string
+          session_id: string | null
+          metadata: Json
+        }
+        Insert: {
+          id?: string
+          tenant_id: string
+          user_id?: string | null
+          event_type: string
+          event_data?: Json
+          timestamp?: string
+          session_id?: string | null
+          metadata?: Json
+        }
+        Update: {
+          id?: string
+          tenant_id?: string
+          user_id?: string | null
+          event_type?: string
+          event_data?: Json
+          timestamp?: string
+          session_id?: string | null
+          metadata?: Json
+        }
+      }
+      feedback: {
+        Row: {
+          id: string
+          tenant_id: string
+          user_id: string | null
+          execution_id: string | null
+          rating: number
+          comment: string | null
+          feedback_type: string
+          metadata: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          tenant_id: string
+          user_id?: string | null
+          execution_id?: string | null
+          rating: number
+          comment?: string | null
+          feedback_type: string
+          metadata?: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          tenant_id?: string
+          user_id?: string | null
+          execution_id?: string | null
+          rating?: number
+          comment?: string | null
+          feedback_type?: string
+          metadata?: Json
+          created_at?: string
+        }
+      }
+      api_keys: {
+        Row: {
+          id: string
+          tenant_id: string
+          user_id: string
+          name: string
+          key_hash: string
+          permissions: string[]
+          expires_at: string | null
+          last_used_at: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          tenant_id: string
+          user_id: string
+          name: string
+          key_hash: string
+          permissions?: string[]
+          expires_at?: string | null
+          last_used_at?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          tenant_id?: string
+          user_id?: string
+          name?: string
+          key_hash?: string
+          permissions?: string[]
+          expires_at?: string | null
+          last_used_at?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

@@ -211,8 +211,8 @@ export function useStreamingResponse(options: UseStreamingResponseOptions = {}) 
     });
 
     try {
-      // Get authentication token
-      const token = localStorage.getItem('supabase.auth.token');
+      // Get authentication token (unused for EventSource but kept for future use)
+      // const token = localStorage.getItem('supabase.auth.token');
       
       // Build URL with query parameters
       const baseUrl = import.meta.env.VITE_BACKEND_API_URL || 'http://localhost:8000';

@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 interface AgentState {
   step: string;
@@ -50,8 +51,12 @@ export function useCopilotAgent(): UseCopilotAgentReturn {
   useEffect(() => {
     if (!user) return;
 
-    const connectWebSocket = () => {
+    const connectWebSocket = async () => {
       try {
+        // Get current session for token
+        const { data: { session } } = await supabase.auth.getSession();
+        const accessToken = session?.access_token || 'demo-token';
+
         // Determine WebSocket URL
         const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const wsHost = import.meta.env.VITE_BACKEND_URL?.replace('http://', '').replace('https://', '') || 'localhost:8000';
@@ -62,11 +67,11 @@ export function useCopilotAgent(): UseCopilotAgentReturn {
 
         ws.onopen = () => {
           console.log('WebSocket connected');
-          
+
           // Send authentication
           ws.send(JSON.stringify({
             type: 'auth',
-            token: user.access_token || 'demo-token',
+            token: accessToken,
             user_id: user.id,
             tenant_id: user.user_metadata?.tenant_id || 'demo-tenant',
             email: user.email,

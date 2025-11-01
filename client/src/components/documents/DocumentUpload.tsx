@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Upload, FileText, X, Loader2, CheckCircle, Cloud, Sparkles } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
@@ -53,9 +53,9 @@ export function DocumentUpload({ onUploadComplete }: { onUploadComplete?: () => 
         // Generate unique file path
         const fileExt = file.name.split('.').pop();
         const fileName = `${profile.tenant_id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        
+
         // Upload file to Supabase Storage
-        const { data: uploadData, error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('documents')
           .upload(fileName, file, {
             cacheControl: '3600',
