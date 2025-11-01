@@ -41,17 +41,38 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const storage = new DbStorage(db);
+  let storage: DbStorage | null = null;
+  let demoData = { tenantId: "", userId: "", sessionId: "" };
 
-  // Initialize demo data and expose IDs via API
-  const demoData = await initializeDemoData(storage);
-  
+  // Only initialize database storage if DATABASE_URL is available
+  if (db) {
+    storage = new DbStorage(db);
+    try {
+      // Initialize demo data and expose IDs via API
+      demoData = await initializeDemoData(storage);
+      console.log("✓ Database initialized successfully");
+    } catch (error) {
+      console.error("⚠️  Database initialization failed:", error);
+      console.log("   Continuing without database features...");
+    }
+  } else {
+    console.log("ℹ️  Running in database-less mode. Frontend will use Supabase client.");
+  }
+
   // Add endpoint to get demo data
   app.get("/api/demo/config", (_req, res) => {
     res.json(demoData);
   });
 
-  registerRoutes(app, storage);
+  if (storage) {
+    registerRoutes(app, storage);
+  } else {
+    // Minimal routes for database-less mode
+    app.get("/api/health", (_req, res) => {
+      res.json({ status: "ok", mode: "database-less" });
+    });
+  }
+
   const server = createServer(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -65,6 +86,7 @@ app.use((req, res, next) => {
 
   const PORT = 5000;
   server.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`✓ Server running on port ${PORT}`);
+    console.log(`  Open http://localhost:${PORT} to view the app`);
   });
 })();
