@@ -11,7 +11,7 @@ export async function setupVite(app: Express, server: any) {
   if (process.env.NODE_ENV === "production") {
     const distPath = path.resolve(__dirname, "../dist/public");
     app.use(express.static(distPath));
-    app.get("*", (_req, res, next) => {
+    app.use((_req, res, next) => {
       if (_req.path.startsWith("/api")) {
         return next();
       }
@@ -27,14 +27,14 @@ export async function setupVite(app: Express, server: any) {
     });
 
     app.use(vite.middlewares);
-    app.get("*", async (req, res, next) => {
+    app.use(async (req, res, next) => {
       if (req.originalUrl.startsWith("/api")) {
         return next();
       }
 
       try {
         const template = fs.readFileSync(
-          path.resolve(__dirname, "../index.html"),
+          path.resolve(__dirname, "../client/index.html"),
           "utf-8",
         );
         const page = await vite.transformIndexHtml(req.originalUrl, template);

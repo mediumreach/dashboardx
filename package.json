@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch --clear-screen=false --env-file=.env server/index.ts",
+    "dev": "tsx watch --clear-screen=false --tsconfig tsconfig.node.json --ignore '**/*.timestamp-*' --ignore 'client/**' --ignore 'dist/**' --ignore '*.log' --ignore 'node_modules/**' server/index.ts",
     "build": "vite build",
     "start": "NODE_ENV=production tsx server/index.ts",
     "db:push": "drizzle-kit push",

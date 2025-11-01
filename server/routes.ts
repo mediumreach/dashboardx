@@ -1,5 +1,5 @@
 import type { Express } from "express";
-import type { IStorage } from "./storage";
+import type { IStorage } from "./storage.js";
 import {
   insertUserProfileSchema,
   insertDocumentSchema,
@@ -8,7 +8,7 @@ import {
   insertDataSourceSchema,
   insertCustomAgentSchema,
   insertAgentExecutionSchema
-} from "@shared/schema";
+} from "../shared/schema.js";
 
 export function registerRoutes(app: Express, storage: IStorage) {
   

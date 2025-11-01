@@ -8,7 +8,7 @@ import type {
   DataSource, InsertDataSource,
   CustomAgent, InsertCustomAgent,
   AgentExecution, InsertAgentExecution
-} from "@shared/schema";
+} from "../shared/schema.js";
 
 export interface IStorage {
   // Tenants
