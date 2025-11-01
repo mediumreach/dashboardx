@@ -4,18 +4,36 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "tsx watch --clear-screen=false --env-file=.env server/index.ts",
     "build": "vite build",
+    "start": "NODE_ENV=production tsx server/index.ts",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
     "lint": "eslint .",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@neondatabase/serverless": "^1.0.2",
     "@supabase/supabase-js": "^2.57.4",
+    "@tanstack/react-query": "^5.90.5",
+    "@types/express": "^5.0.5",
+    "@types/ws": "^8.18.1",
+    "drizzle-kit": "^0.31.6",
+    "drizzle-orm": "^0.44.7",
+    "drizzle-zod": "^0.8.3",
+    "express": "^5.1.0",
     "lucide-react": "^0.344.0",
+    "postgres": "^3.4.7",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.9.4"
+    "react-hook-form": "^7.66.0",
+    "react-router-dom": "^7.9.4",
+    "tsx": "^4.20.6",
+    "wouter": "^3.7.1",
+    "ws": "^8.18.3",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",
