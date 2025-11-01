@@ -1,8 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes.js";
 import { setupVite } from "./vite.js";
-import { MemStorage } from "./storage.js";
+import { DbStorage } from "./storage.js";
 import { createServer } from "http";
+import { db } from "./db.js";
 
 const app = express();
 app.use(express.json());
@@ -39,22 +40,7 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const storage = new MemStorage();
-  
-  // Initialize with demo data
-  const tenant = await storage.createTenant({
-    name: "Demo Organization",
-    settings: {}
-  });
-
-  await storage.createUser({
-    id: crypto.randomUUID(),
-    tenantId: tenant.id,
-    email: "admin@demo.com",
-    fullName: "Demo Admin",
-    role: "admin",
-    isActive: true
-  });
+  const storage = new DbStorage(db);
 
   registerRoutes(app, storage);
   const server = createServer(app);

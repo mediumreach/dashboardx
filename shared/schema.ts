@@ -158,3 +158,55 @@ export const agentExecutions = pgTable("agent_executions", {
 export const insertAgentExecutionSchema = createInsertSchema(agentExecutions).omit({ id: true, startedAt: true });
 export type InsertAgentExecution = z.infer<typeof insertAgentExecutionSchema>;
 export type AgentExecution = typeof agentExecutions.$inferSelect;
+
+// Analytics table
+export const analytics = pgTable("analytics", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").references(() => userProfiles.id, { onDelete: "set null" }),
+  eventType: text("event_type").notNull(),
+  eventData: jsonb("event_data").default({}),
+  timestamp: timestamp("timestamp").defaultNow(),
+  sessionId: text("session_id"),
+  metadata: jsonb("metadata").default({})
+});
+
+export const insertAnalyticsSchema = createInsertSchema(analytics).omit({ id: true, timestamp: true });
+export type InsertAnalytics = z.infer<typeof insertAnalyticsSchema>;
+export type Analytics = typeof analytics.$inferSelect;
+
+// Feedback table
+export const feedback = pgTable("feedback", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").references(() => userProfiles.id, { onDelete: "set null" }),
+  executionId: uuid("execution_id").references(() => agentExecutions.id, { onDelete: "cascade" }),
+  rating: integer("rating").notNull(),
+  comment: text("comment"),
+  feedbackType: text("feedback_type").notNull(),
+  metadata: jsonb("metadata").default({}),
+  createdAt: timestamp("created_at").defaultNow()
+});
+
+export const insertFeedbackSchema = createInsertSchema(feedback).omit({ id: true, createdAt: true });
+export type InsertFeedback = z.infer<typeof insertFeedbackSchema>;
+export type Feedback = typeof feedback.$inferSelect;
+
+// API Keys table
+export const apiKeys = pgTable("api_keys", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  tenantId: uuid("tenant_id").notNull().references(() => tenants.id, { onDelete: "cascade" }),
+  userId: uuid("user_id").notNull().references(() => userProfiles.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  keyHash: text("key_hash").notNull(),
+  permissions: text("permissions").array().default([]),
+  expiresAt: timestamp("expires_at"),
+  lastUsedAt: timestamp("last_used_at"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow()
+});
+
+export const insertApiKeySchema = createInsertSchema(apiKeys).omit({ id: true, createdAt: true, updatedAt: true });
+export type InsertApiKey = z.infer<typeof insertApiKeySchema>;
+export type ApiKey = typeof apiKeys.$inferSelect;

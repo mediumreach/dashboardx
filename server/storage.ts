@@ -1,3 +1,4 @@
+import { eq } from "drizzle-orm";
 import type {
   Tenant, InsertTenant,
   UserProfile, InsertUserProfile,
@@ -9,6 +10,8 @@ import type {
   CustomAgent, InsertCustomAgent,
   AgentExecution, InsertAgentExecution
 } from "../shared/schema.js";
+import * as schema from "../shared/schema.js";
+import type { NodePgDatabase } from "drizzle-orm/node-postgres";
 
 export interface IStorage {
   // Tenants
@@ -295,5 +298,174 @@ export class MemStorage implements IStorage {
     const updated = { ...execution, ...updates };
     this.executions.set(id, updated);
     return updated;
+  }
+}
+
+// Postgres-backed storage implementation
+export class DbStorage implements IStorage {
+  constructor(private db: NodePgDatabase<typeof schema>) {}
+
+  async getTenant(id: string) {
+    const result = await this.db.select().from(schema.tenants).where(eq(schema.tenants.id, id));
+    return result[0];
+  }
+
+  async createTenant(data: InsertTenant) {
+    const result = await this.db.insert(schema.tenants).values(data).returning();
+    return result[0];
+  }
+
+  async getUserById(id: string) {
+    const result = await this.db.select().from(schema.userProfiles).where(eq(schema.userProfiles.id, id));
+    return result[0];
+  }
+
+  async getUserByEmail(email: string) {
+    const result = await this.db.select().from(schema.userProfiles).where(eq(schema.userProfiles.email, email));
+    return result[0];
+  }
+
+  async getUsersByTenant(tenantId: string) {
+    return await this.db.select().from(schema.userProfiles).where(eq(schema.userProfiles.tenantId, tenantId));
+  }
+
+  async createUser(data: InsertUserProfile) {
+    const result = await this.db.insert(schema.userProfiles).values(data).returning();
+    return result[0];
+  }
+
+  async updateUser(id: string, updates: Partial<UserProfile>) {
+    const result = await this.db.update(schema.userProfiles).set(updates).where(eq(schema.userProfiles.id, id)).returning();
+    if (!result[0]) throw new Error("User not found");
+    return result[0];
+  }
+
+  async getDocuments(tenantId: string) {
+    return await this.db.select().from(schema.documents).where(eq(schema.documents.tenantId, tenantId));
+  }
+
+  async getDocument(id: string) {
+    const result = await this.db.select().from(schema.documents).where(eq(schema.documents.id, id));
+    return result[0];
+  }
+
+  async createDocument(data: InsertDocument) {
+    const result = await this.db.insert(schema.documents).values(data).returning();
+    return result[0];
+  }
+
+  async updateDocument(id: string, updates: Partial<Document>) {
+    const result = await this.db.update(schema.documents).set(updates).where(eq(schema.documents.id, id)).returning();
+    if (!result[0]) throw new Error("Document not found");
+    return result[0];
+  }
+
+  async deleteDocument(id: string) {
+    await this.db.delete(schema.documents).where(eq(schema.documents.id, id));
+  }
+
+  async getDocumentChunks(documentId: string) {
+    return await this.db.select().from(schema.documentChunks).where(eq(schema.documentChunks.documentId, documentId));
+  }
+
+  async createDocumentChunk(data: InsertDocumentChunk) {
+    const result = await this.db.insert(schema.documentChunks).values(data).returning();
+    return result[0];
+  }
+
+  async getChatSessions(userId: string) {
+    return await this.db.select().from(schema.chatSessions).where(eq(schema.chatSessions.userId, userId));
+  }
+
+  async getChatSession(id: string) {
+    const result = await this.db.select().from(schema.chatSessions).where(eq(schema.chatSessions.id, id));
+    return result[0];
+  }
+
+  async createChatSession(data: InsertChatSession) {
+    const result = await this.db.insert(schema.chatSessions).values(data).returning();
+    return result[0];
+  }
+
+  async updateChatSession(id: string, updates: Partial<ChatSession>) {
+    const result = await this.db.update(schema.chatSessions).set(updates).where(eq(schema.chatSessions.id, id)).returning();
+    if (!result[0]) throw new Error("Chat session not found");
+    return result[0];
+  }
+
+  async deleteChatSession(id: string) {
+    await this.db.delete(schema.chatSessions).where(eq(schema.chatSessions.id, id));
+  }
+
+  async getChatMessages(sessionId: string) {
+    return await this.db.select().from(schema.chatMessages).where(eq(schema.chatMessages.sessionId, sessionId));
+  }
+
+  async createChatMessage(data: InsertChatMessage) {
+    const result = await this.db.insert(schema.chatMessages).values(data).returning();
+    return result[0];
+  }
+
+  async getDataSources(tenantId: string) {
+    return await this.db.select().from(schema.dataSources).where(eq(schema.dataSources.tenantId, tenantId));
+  }
+
+  async getDataSource(id: string) {
+    const result = await this.db.select().from(schema.dataSources).where(eq(schema.dataSources.id, id));
+    return result[0];
+  }
+
+  async createDataSource(data: InsertDataSource) {
+    const result = await this.db.insert(schema.dataSources).values(data).returning();
+    return result[0];
+  }
+
+  async updateDataSource(id: string, updates: Partial<DataSource>) {
+    const result = await this.db.update(schema.dataSources).set(updates).where(eq(schema.dataSources.id, id)).returning();
+    if (!result[0]) throw new Error("Data source not found");
+    return result[0];
+  }
+
+  async deleteDataSource(id: string) {
+    await this.db.delete(schema.dataSources).where(eq(schema.dataSources.id, id));
+  }
+
+  async getCustomAgents(tenantId: string) {
+    return await this.db.select().from(schema.customAgents).where(eq(schema.customAgents.tenantId, tenantId));
+  }
+
+  async getCustomAgent(id: string) {
+    const result = await this.db.select().from(schema.customAgents).where(eq(schema.customAgents.id, id));
+    return result[0];
+  }
+
+  async createCustomAgent(data: InsertCustomAgent) {
+    const result = await this.db.insert(schema.customAgents).values(data).returning();
+    return result[0];
+  }
+
+  async updateCustomAgent(id: string, updates: Partial<CustomAgent>) {
+    const result = await this.db.update(schema.customAgents).set(updates).where(eq(schema.customAgents.id, id)).returning();
+    if (!result[0]) throw new Error("Custom agent not found");
+    return result[0];
+  }
+
+  async deleteCustomAgent(id: string) {
+    await this.db.delete(schema.customAgents).where(eq(schema.customAgents.id, id));
+  }
+
+  async getAgentExecutions(agentId: string) {
+    return await this.db.select().from(schema.agentExecutions).where(eq(schema.agentExecutions.agentId, agentId));
+  }
+
+  async createAgentExecution(data: InsertAgentExecution) {
+    const result = await this.db.insert(schema.agentExecutions).values(data).returning();
+    return result[0];
+  }
+
+  async updateAgentExecution(id: string, updates: Partial<AgentExecution>) {
+    const result = await this.db.update(schema.agentExecutions).set(updates).where(eq(schema.agentExecutions.id, id)).returning();
+    if (!result[0]) throw new Error("Agent execution not found");
+    return result[0];
   }
 }
